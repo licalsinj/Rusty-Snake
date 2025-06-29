@@ -10,9 +10,10 @@ End the game by pressing Escape.
 
 ## Know Issues
 
-If you press any key other than the arrow keys or WASD.
+~~if you press any key other than the arrow keys or WASD.~~
 
 ## Potential Improvements
 
 Instead of auto restarting wait for the user to press space to restart.
 Keep track of the score and display it during the game and at the end.
+Add the ability to pause the game.
