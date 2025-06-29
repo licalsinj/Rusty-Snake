@@ -2,6 +2,8 @@
 
 A snake game built in rust using piston window crate.
 
+![Screenshot 2025-06-28 at 7 56 36 PM](https://github.com/user-attachments/assets/1f608d06-e9e2-495c-bac5-5555e001cffd)
+
 ## Gameplay
 
 Control the snake with the arrow keys (or WASD) to eat the apple.
