@@ -2,7 +2,8 @@
 
 A snake game built in rust using piston window crate.
 
-![Screenshot 2025-06-28 at 7 56 36 PM](https://github.com/user-attachments/assets/1f608d06-e9e2-495c-bac5-5555e001cffd)
+<img width="739" alt="Screenshot 2025-06-30 at 5 39 27 PM" src="https://github.com/user-attachments/assets/cbdd59d0-4886-424e-8f62-9d17b2dea691" />
+
 
 ## Gameplay
 
