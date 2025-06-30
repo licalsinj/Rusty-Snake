@@ -3,12 +3,13 @@ use piston_window::*;
 
 use rand::prelude::*;
 
-use crate::draw::{draw_block, draw_rectangle};
+use crate::draw::{draw_block, draw_rectangle, draw_score};
 use crate::snake::{Direction, Snake};
+use crate::TEXT_COLOR;
 
-const FOOD_COLOR: Color = [0.80, 0.00, 0.00, 1.0];
-const BORDER_COLOR: Color = [0.00, 0.00, 0.00, 1.0];
-const GAMEOVER_COLOR: Color = [0.80, 0.00, 0.00, 0.50];
+const FOOD_COLOR: Color = [0.2235, 0.6862, 0.8431, 1.0];
+const BORDER_COLOR: Color = [0.14, 0.14, 0.14, 1.0];
+const GAMEOVER_COLOR: Color = [0.8235, 0.6, 0.1137, 0.3333];
 
 const MOVING_PERIOD: f64 = 0.1;
 const RESTART_TIME: f64 = 1.0;
@@ -19,6 +20,7 @@ pub struct Game {
     food_exists: bool,
     food_x: i32,
     food_y: i32,
+    score: i32,
 
     // Game Board Info
     width: i32,
@@ -36,6 +38,7 @@ impl Game {
             food_exists: true,
             food_x: 6,
             food_y: 4,
+            score: 0,
             width,
             height,
             waiting_time: 0.0,
@@ -67,7 +70,7 @@ impl Game {
         self.update_snake(dir);
     }
 
-    pub fn draw(&self, con: &Context, g: &mut G2d) {
+    pub fn draw(&self, con: &Context, g: &mut G2d, d: &mut GfxDevice, glyphs: &mut Glyphs) {
         self.snake.draw(con, g);
 
         if self.food_exists {
@@ -82,6 +85,17 @@ impl Game {
         if self.game_over {
             draw_rectangle(GAMEOVER_COLOR, 0, 0, self.width, self.height, con, g);
         }
+
+        draw_score(
+            con,
+            g,
+            d,
+            glyphs,
+            TEXT_COLOR,
+            25,
+            20,
+            format!("Score: {}", self.score),
+        );
     }
 
     pub fn update(&mut self, delta_time: f64) {
@@ -135,6 +149,7 @@ impl Game {
         self.food_x = new_x;
         self.food_y = new_y;
         self.food_exists = true;
+        self.score += 1;
     }
 
     fn update_snake(&mut self, dir: Option<Direction>) {
@@ -151,6 +166,7 @@ impl Game {
         self.snake = Snake::new(2, 2);
         self.food_x = 6;
         self.food_y = 4;
+        self.score = 0;
         self.food_exists = true;
         self.waiting_time = 0.0;
         self.game_over = false;
