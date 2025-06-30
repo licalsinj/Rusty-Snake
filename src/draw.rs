@@ -1,5 +1,5 @@
 // Lets you draw rectangles, 2d Graphics
-use piston_window::{rectangle, Context, G2d};
+use piston_window::*;
 // Lets you do colors including alpha
 use piston_window::types::Color;
 
@@ -51,4 +51,26 @@ pub fn draw_rectangle(
         con.transform,
         g,
     );
+}
+
+pub fn draw_score(
+    con: &Context,
+    g: &mut G2d,
+    d: &mut GfxDevice,
+    glyphs: &mut Glyphs,
+    color: Color,
+    x: i32,
+    y: i32,
+    text: String,
+) {
+    text::Text::new_color(color, 15)
+        .draw(
+            text.as_str(),
+            glyphs,
+            &con.draw_state,
+            con.transform.trans(x as f64, y as f64),
+            g,
+        )
+        .expect("Issue unwrapping draw text.");
+    glyphs.factory.encoder.flush(d);
 }
