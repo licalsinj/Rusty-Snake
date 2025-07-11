@@ -3,15 +3,15 @@ use piston_window::*;
 
 use rand::prelude::*;
 
-use crate::draw::{draw_block, draw_rectangle, draw_score};
+use crate::draw::{draw_block, draw_rectangle, draw_string};
 use crate::snake::{Direction, Snake};
 use crate::TEXT_COLOR;
 
 const FOOD_COLOR: Color = [0.2235, 0.6862, 0.8431, 1.0];
 const BORDER_COLOR: Color = [0.14, 0.14, 0.14, 1.0];
-const GAMEOVER_COLOR: Color = [0.8235, 0.6, 0.1137, 0.3333];
+const GAMEOVER_COLOR: Color = [0.6235, 0.3, 0.1137, 0.3333];
+const PAUSE_COLOR: Color = [0.2235, 0.6862, 0.8431, 0.3333];
 
-const MOVING_PERIOD: f64 = 0.1;
 const RESTART_TIME: f64 = 1.0;
 
 pub struct Game {
@@ -29,6 +29,7 @@ pub struct Game {
     // Game State Info
     game_over: bool,
     waiting_time: f64,
+    pause: bool,
 }
 
 impl Game {
@@ -43,12 +44,17 @@ impl Game {
             height,
             waiting_time: 0.0,
             game_over: false,
+            pause: false,
         }
     }
 
     pub fn key_pressed(&mut self, key: Key) {
         if self.game_over {
             return;
+        }
+
+        if key == Key::Space {
+            self.pause = !self.pause;
         }
 
         let dir = match key {
@@ -85,20 +91,38 @@ impl Game {
         if self.game_over {
             draw_rectangle(GAMEOVER_COLOR, 0, 0, self.width, self.height, con, g);
         }
+        if self.pause {
+            draw_rectangle(PAUSE_COLOR, 0, 0, self.width, self.height, con, g);
+            draw_string(
+                con,
+                g,
+                d,
+                glyphs,
+                TEXT_COLOR,
+                self.width / 2 - 4,
+                self.height / 2 - 2,
+                format!("Paused!"),
+                30,
+            );
+        }
 
-        draw_score(
+        draw_string(
             con,
             g,
             d,
             glyphs,
             TEXT_COLOR,
-            25,
-            20,
+            1,
+            1,
             format!("Score: {}", self.score),
+            15,
         );
     }
 
     pub fn update(&mut self, delta_time: f64) {
+        if self.pause {
+            return;
+        }
         self.waiting_time += delta_time;
 
         if self.game_over {
@@ -112,7 +136,7 @@ impl Game {
             self.add_food();
         }
 
-        if self.waiting_time > MOVING_PERIOD {
+        if self.waiting_time > self.snake.speed {
             self.update_snake(None);
         }
     }
@@ -150,6 +174,7 @@ impl Game {
         self.food_y = new_y;
         self.food_exists = true;
         self.score += 1;
+        self.snake.update_speed(self.score);
     }
 
     fn update_snake(&mut self, dir: Option<Direction>) {
