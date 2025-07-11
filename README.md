@@ -10,6 +10,7 @@ A snake game built in rust using piston window crate.
 Control the snake with the arrow keys (or WASD) to eat the apple.
 Avoid the walls and running over your own tail.
 End the game by pressing Escape.
+Pause the game with the spacebar.
 
 ## Know Issues
 
@@ -19,5 +20,5 @@ End the game by pressing Escape.
 
 - [ ] Instead of auto restarting wait for the user to press space to restart.
 - [x] Keep track of the score and display it during the game and at the end.
-- [ ] Add the ability to pause the game.
+- [x] Add the ability to pause the game.
 - [x] Make the color scheme rusty
