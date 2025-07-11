@@ -53,7 +53,7 @@ pub fn draw_rectangle(
     );
 }
 
-pub fn draw_score(
+pub fn draw_string(
     con: &Context,
     g: &mut G2d,
     d: &mut GfxDevice,
@@ -62,13 +62,14 @@ pub fn draw_score(
     x: i32,
     y: i32,
     text: String,
+    font_size: u32,
 ) {
-    text::Text::new_color(color, 15)
+    text::Text::new_color(color, font_size)
         .draw(
             text.as_str(),
             glyphs,
             &con.draw_state,
-            con.transform.trans(x as f64, y as f64),
+            con.transform.trans(to_coord(x), to_coord(y)),
             g,
         )
         .expect("Issue unwrapping draw text.");

@@ -35,6 +35,7 @@ pub struct Snake {
     direction: Direction,
     body: LinkedList<Block>,
     tail: Option<Block>,
+    pub speed: f64,
 }
 
 impl Snake {
@@ -50,6 +51,7 @@ impl Snake {
             direction: Direction::Right,
             body,
             tail: None,
+            speed: 0.3,
         }
     }
 
@@ -138,5 +140,11 @@ impl Snake {
             }
         }
         return false;
+    }
+
+    pub fn update_speed(&mut self, score: i32) {
+        println!("{}", score);
+        self.speed = 0.25 - ((score as f64 / 5.0).floor() * 0.025) + 0.05;
+        println!("{}", self.speed);
     }
 }
